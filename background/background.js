@@ -18,18 +18,16 @@ const DEFAULT_SETTINGS = {
 };
 
 
-// Initialize settings on install - Auto scrolling disabled by default on all webpages
+// Initialize settings on install - Auto scrolling enabled by default on all webpages
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.get(null, (existing) => {
-    const updated = { ...DEFAULT_SETTINGS, ...existing, isScrolling: false };
-    if (existing.includeSubFrames === undefined) {
-      updated.includeSubFrames = true;
-    }
+    const updated = { enabledGlobal: true, ...DEFAULT_SETTINGS, ...existing, isScrolling: false };
     chrome.storage.local.set(updated, () => {
-      console.log('Scrollinger: Initialized default settings (Auto-scrolling OFF by default)', updated);
+      console.log('Scrollinger: Initialized default settings (Auto-scrolling ON by default)', updated);
     });
   });
 });
+
 
 
 // Always ensure auto-scrolling is OFF on browser startup
