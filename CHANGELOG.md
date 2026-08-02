@@ -7,36 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.5] - 2026-08-02
-
-### Changed
-- **Sub-Frames Default Checked & Per-Domain Controls**: "Include/Exclude sub-frames" is now **checked by default** (`true`).
-- **Domain Sub-Frame Exclusion Persistence**: When unchecked for a specific domain/page, sub-frame auto-scrolling on that domain is permanently excluded until checked again.
-
----
-
-## [1.0.4] - 2026-08-02
-
-
-### Fixed
-- **Tab-Local User Interrupt Isolation**: Pausing scrolling via user interaction (mouse wheel / arrow keys) now pauses **locally on that tab only** without writing `isScrolling: false` to shared storage. Other open tabs continue scrolling uninterrupted.
-- **Reload & New Tab Auto-Start**: Preserved global scrolling state and Auto-Start configuration so reloading pages or opening new tabs on enabled domains starts auto-scrolling reliably.
-
----
-
 ## [1.0.3] - 2026-08-02
 
-
-### Fixed
-- **Same-Domain & SPA Navigation Auto-Scroll Retention**: Fixed auto-scrolling automatically stopping when navigating between pages on the same domain or clicking article links. Auto-scrolling now seamlessly continues on new pages/routes.
-- **User Scroll Interrupt Detection**: Replaced `mousedown`/`touchstart` with `wheel`, `touchmove` swipe gestures, and scroll navigation keys (`Space`, `ArrowUp`, `ArrowDown`, `PageUp`, `PageDown`). Clicking links, buttons, or page text no longer accidentally cancels auto-scrolling.
-
----
-
-## [1.0.2] - 2026-08-02
-
-
-### Fixed
+### Added & Improved
+- **Sub-Frames Default Checked & Per-Domain Controls**: *"Include/Exclude sub-frames"* is now **checked by default** (`true`). Unchecking sub-frames on a specific page/domain permanently excludes sub-frames on that domain until checked again.
+- **Tab-Local User Interrupt Isolation**: Pausing scrolling via user interaction (`wheel`, `touchmove`, scroll keys) now pauses **locally on that active tab only**, without touching shared storage. Other open tabs continue scrolling uninterrupted.
+- **Same-Domain & SPA Navigation Auto-Scroll Retention**: Fixed auto-scrolling automatically stopping when navigating between pages on the same domain or clicking article links.
+- **User Scroll Interrupt Precision**: Replaced `mousedown`/`touchstart` with `wheel`, `touchmove` swipe gestures, and scroll navigation keys (`Space`, `ArrowUp`, `ArrowDown`, `PageUp`, `PageDown`). Clicking links, buttons, or page text no longer cancels auto-scrolling.
 - **In-Site Widget Opera & Chromium Positioning**: Added explicit default `right: 20px; bottom: 20px;` fixed coordinates in `applySavedWidgetPosition()` and `content.css` to fix floating widget rendering when `widgetPosition` is uninitialized.
 - **Shadow DOM Style Injection**: Synchronously attached stylesheet element inside Shadow DOM root to ensure 0ms style rendering latency across all browser engines.
 

@@ -22,11 +22,15 @@ const DEFAULT_SETTINGS = {
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.get(null, (existing) => {
     const updated = { ...DEFAULT_SETTINGS, ...existing, isScrolling: false };
+    if (existing.includeSubFrames === undefined) {
+      updated.includeSubFrames = true;
+    }
     chrome.storage.local.set(updated, () => {
       console.log('Scrollinger: Initialized default settings (Auto-scrolling OFF by default)', updated);
     });
   });
 });
+
 
 // Always ensure auto-scrolling is OFF on browser startup
 chrome.runtime.onStartup.addListener(() => {
