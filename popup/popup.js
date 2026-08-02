@@ -461,7 +461,14 @@ function initUI(s) {
   }
 
   const chkSub = document.getElementById('chkSubFrames');
-  if (chkSub) chkSub.checked = !!s.includeSubFrames;
+  if (chkSub) {
+    const subFrameDomains = s.subFrameDomains || {};
+    const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
+      ? subFrameDomains[currentDomain]
+      : (s.includeSubFrames !== undefined ? s.includeSubFrames : true);
+    chkSub.checked = !!domainSubFrameAllowed;
+  }
+
 
   const chkInsite = document.getElementById('chkInsiteWidget');
   if (chkInsite) chkInsite.checked = s.showInsiteButton !== false;
@@ -508,7 +515,14 @@ function updateUIState(s) {
   }
 
   const chkSub = document.getElementById('chkSubFrames');
-  if (chkSub && s.includeSubFrames !== undefined) chkSub.checked = s.includeSubFrames;
+  if (chkSub) {
+    const subFrameDomains = s.subFrameDomains || {};
+    const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
+      ? subFrameDomains[currentDomain]
+      : (s.includeSubFrames !== undefined ? s.includeSubFrames : true);
+    chkSub.checked = !!domainSubFrameAllowed;
+  }
+
 
   const chkInsite = document.getElementById('chkInsiteWidget');
   if (chkInsite && s.showInsiteButton !== undefined) chkInsite.checked = s.showInsiteButton;
@@ -651,7 +665,17 @@ function bindEvents() {
   const chkSub = document.getElementById('chkSubFrames');
   if (chkSub) {
     chkSub.addEventListener('change', (e) => {
-      chrome.storage.local.set({ includeSubFrames: e.target.checked });
+      const isChecked = e.target.checked;
+      chrome.storage.local.get(['subFrameDomains'], (res) => {
+        const subFrameDomains = res.subFrameDomains || {};
+        if (currentDomain) {
+          subFrameDomains[currentDomain] = isChecked;
+        }
+        chrome.storage.local.set({
+          subFrameDomains,
+          includeSubFrames: isChecked
+        });
+      });
     });
   }
 

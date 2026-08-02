@@ -7,7 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.5] - 2026-08-02
+
+### Changed
+- **Sub-Frames Default Checked & Per-Domain Controls**: "Include/Exclude sub-frames" is now **checked by default** (`true`).
+- **Domain Sub-Frame Exclusion Persistence**: When unchecked for a specific domain/page, sub-frame auto-scrolling on that domain is permanently excluded until checked again.
+
+---
+
 ## [1.0.4] - 2026-08-02
+
 
 ### Fixed
 - **Tab-Local User Interrupt Isolation**: Pausing scrolling via user interaction (mouse wheel / arrow keys) now pauses **locally on that tab only** without writing `isScrolling: false` to shared storage. Other open tabs continue scrolling uninterrupted.

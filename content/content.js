@@ -12,8 +12,10 @@
   let state = {
     enabledGlobal: true,
     enabledDomains: {},
-    includeSubFrames: false,
+    subFrameDomains: {},
+    includeSubFrames: true,
     scrollMode: 'natural',
+
     scrollAmount: 350,
     scrollInterval: 15,
     direction: 'down',
@@ -354,9 +356,15 @@
   }
 
   function checkScopeEnabled() {
-    if (isSubFrame && !state.includeSubFrames) {
+    const subFrameDomains = state.subFrameDomains || {};
+    const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
+      ? subFrameDomains[currentDomain]
+      : (state.includeSubFrames !== undefined ? state.includeSubFrames : true);
+
+    if (isSubFrame && !domainSubFrameAllowed) {
       return false;
     }
+
     if (!state.enabledGlobal) {
       return false;
     }

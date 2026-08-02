@@ -4,7 +4,8 @@
 const DEFAULT_SETTINGS = {
   enabledGlobal: true,
   enabledDomains: {},
-  includeSubFrames: false,
+  subFrameDomains: {},
+  includeSubFrames: true,
   scrollMode: 'natural',
   scrollAmount: 350,
   scrollInterval: 15,
@@ -15,6 +16,7 @@ const DEFAULT_SETTINGS = {
   showInsiteButton: true,
   autoReverse: true
 };
+
 
 // Initialize settings on install - Auto scrolling disabled by default on all webpages
 chrome.runtime.onInstalled.addListener(() => {
