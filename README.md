@@ -1,4 +1,6 @@
-# Scrollinger 🚀
+# Scrollinger 
+
+<img width="300" height="188" alt="opera_promo_300x188" src="https://github.com/user-attachments/assets/e4d264c2-97fd-4911-8f24-571f92d3f589" />
 
 **Scrollinger** is a modern, high-performance Chrome Extension (Manifest V3) designed for smooth, effortless, hands-free web page scrolling. Built with a sleek Neo-Brutalist Charcoal & Terracotta UI, Scrollinger provides granular scrolling controls, dynamic content detection, multi-language internationalization, and an interactive in-site floating widget.
 
@@ -59,6 +61,10 @@ Includes complete native dictionary support for **21 languages**:
 | **Auto-Reverse** | Automatically reverses scrolling direction when reaching the top or bottom of a page. |
 | **User Interaction Stop** | Automatically stops scrolling the instant user wheel, touch, or key input is detected. |
 | **In-Site Widget** | Toggle the on-screen floating control widget on web pages. |
+
+<img width="1280" height="800" alt="Screenshot 2026-08-02 164835" src="https://github.com/user-attachments/assets/85733619-a364-4e6d-b409-f5cf9f287a59" />
+<img width="1280" height="800" alt="Screenshot 2026-08-02 164821" src="https://github.com/user-attachments/assets/2a6faf5f-01de-45ae-b4e3-9b4fb6d0d79d" />
+<img width="1280" height="800" alt="Screenshot 2026-08-02 164902" src="https://github.com/user-attachments/assets/e8d572fb-66ed-4ea1-a7e6-8889c02faaeb" />
 
 ---
 
