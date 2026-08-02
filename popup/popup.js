@@ -467,7 +467,9 @@ function initUI(s) {
       ? subFrameDomains[currentDomain]
       : (s.includeSubFrames !== undefined ? s.includeSubFrames : true);
     chkSub.checked = !!domainSubFrameAllowed;
+    updateSubFramesLabel();
   }
+
 
 
   const chkInsite = document.getElementById('chkInsiteWidget');
@@ -521,7 +523,9 @@ function updateUIState(s) {
       ? subFrameDomains[currentDomain]
       : (s.includeSubFrames !== undefined ? s.includeSubFrames : true);
     chkSub.checked = !!domainSubFrameAllowed;
+    updateSubFramesLabel();
   }
+
 
 
   const chkInsite = document.getElementById('chkInsiteWidget');
@@ -666,6 +670,7 @@ function bindEvents() {
   if (chkSub) {
     chkSub.addEventListener('change', (e) => {
       const isChecked = e.target.checked;
+      updateSubFramesLabel();
       chrome.storage.local.get(['subFrameDomains'], (res) => {
         const subFrameDomains = res.subFrameDomains || {};
         if (currentDomain) {
@@ -678,6 +683,7 @@ function bindEvents() {
       });
     });
   }
+
 
   const chkInsite = document.getElementById('chkInsiteWidget');
   if (chkInsite) {
@@ -904,6 +910,18 @@ function updateActionButtons(isScrolling, direction) {
 }
 
 
+function updateSubFramesLabel() {
+  const chkSub = document.getElementById('chkSubFrames');
+  const lblSub = document.getElementById('lblSubFrames');
+  if (!chkSub || !lblSub) return;
+  const dict = I18N[currentLanguage] || I18N.en;
+  if (chkSub.checked) {
+    lblSub.textContent = dict.subframesInclude || "Include sub-frames";
+  } else {
+    lblSub.textContent = dict.subframesExclude || "Exclude sub-frames";
+  }
+}
+
 function applyTranslations() {
   const dict = I18N[currentLanguage] || I18N.en;
 
@@ -914,7 +932,7 @@ function applyTranslations() {
 
   setTxt('lblGlobal', dict.global);
   setTxt('lblDomain', dict.domain);
-  setTxt('lblSubFrames', dict.subframes);
+  updateSubFramesLabel();
   setTxt('lblInsiteWidget', dict.insiteWidget);
   setTxt('lblNaturally', dict.naturally);
   setTxt('lblHowMuch', dict.howMuch);
@@ -930,3 +948,4 @@ function applyTranslations() {
     updateActionButtons(res.isScrolling, res.direction || 'down');
   });
 }
+
