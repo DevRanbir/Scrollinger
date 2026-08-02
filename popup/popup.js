@@ -430,12 +430,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   bindEvents();
 });
 
+let currentUrlKey = '';
+
 function getActiveTabDomain() {
   return new Promise((resolve) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs && tabs[0] && tabs[0].url) {
         try {
           const url = new URL(tabs[0].url);
+          currentDomain = url.hostname;
+          currentUrlKey = url.hostname + url.pathname;
           resolve(url.hostname);
         } catch (e) {
           resolve('');
@@ -446,6 +450,7 @@ function getActiveTabDomain() {
     });
   });
 }
+
 
 function initUI(s) {
   currentLanguage = s.language || 'en';
@@ -466,13 +471,15 @@ function initUI(s) {
 
   const chkSub = document.getElementById('chkSubFrames');
   if (chkSub) {
+    const subFramePages = s.subFramePages || {};
     const subFrameDomains = s.subFrameDomains || {};
-    const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
-      ? subFrameDomains[currentDomain]
-      : (s.includeSubFrames !== undefined ? s.includeSubFrames : true);
-    chkSub.checked = !!domainSubFrameAllowed;
+    const pageSubFrameAllowed = (currentUrlKey && subFramePages[currentUrlKey] !== undefined)
+      ? subFramePages[currentUrlKey]
+      : ((currentDomain && subFrameDomains[currentDomain] !== undefined) ? subFrameDomains[currentDomain] : true);
+    chkSub.checked = !!pageSubFrameAllowed;
     updateSubFramesLabel();
   }
+
 
 
 
@@ -525,13 +532,15 @@ function updateUIState(s) {
 
   const chkSub = document.getElementById('chkSubFrames');
   if (chkSub) {
+    const subFramePages = s.subFramePages || {};
     const subFrameDomains = s.subFrameDomains || {};
-    const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
-      ? subFrameDomains[currentDomain]
-      : (s.includeSubFrames !== undefined ? s.includeSubFrames : true);
-    chkSub.checked = !!domainSubFrameAllowed;
+    const pageSubFrameAllowed = (currentUrlKey && subFramePages[currentUrlKey] !== undefined)
+      ? subFramePages[currentUrlKey]
+      : ((currentDomain && subFrameDomains[currentDomain] !== undefined) ? subFrameDomains[currentDomain] : true);
+    chkSub.checked = !!pageSubFrameAllowed;
     updateSubFramesLabel();
   }
+
 
 
 
@@ -678,18 +687,24 @@ function bindEvents() {
     chkSub.addEventListener('change', (e) => {
       const isChecked = e.target.checked;
       updateSubFramesLabel();
-      chrome.storage.local.get(['subFrameDomains'], (res) => {
+      chrome.storage.local.get(['subFramePages', 'subFrameDomains'], (res) => {
+        const subFramePages = res.subFramePages || {};
         const subFrameDomains = res.subFrameDomains || {};
+        if (currentUrlKey) {
+          subFramePages[currentUrlKey] = isChecked;
+        }
         if (currentDomain) {
           subFrameDomains[currentDomain] = isChecked;
         }
         chrome.storage.local.set({
+          subFramePages,
           subFrameDomains,
           includeSubFrames: isChecked
         });
       });
     });
   }
+
 
 
   const chkInsite = document.getElementById('chkInsiteWidget');

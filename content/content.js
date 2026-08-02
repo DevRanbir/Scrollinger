@@ -7,13 +7,16 @@
 
   let currentDomain = window.location.hostname;
   let currentPath = window.location.href;
+  let currentUrlKey = window.location.hostname + window.location.pathname;
   const isSubFrame = window.self !== window.top;
 
   let state = {
     enabledGlobal: true,
     enabledDomains: {},
     subFrameDomains: {},
+    subFramePages: {},
     includeSubFrames: true,
+
     scrollMode: 'natural',
 
     scrollAmount: 350,
@@ -260,7 +263,9 @@
     const wasScrolling = state.isScrolling;
     currentPath = window.location.href;
     currentDomain = window.location.hostname;
+    currentUrlKey = window.location.hostname + window.location.pathname;
     bottomReachedTime = null;
+
     lastHeightChangeTime = performance.now();
 
     setTimeout(() => {
@@ -356,19 +361,21 @@
   }
 
   function checkScopeEnabled() {
+    const subFramePages = state.subFramePages || {};
     const subFrameDomains = state.subFrameDomains || {};
-    const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
-      ? subFrameDomains[currentDomain]
-      : (state.includeSubFrames !== undefined ? state.includeSubFrames : true);
+
+    const pageSubFrameAllowed = (currentUrlKey && subFramePages[currentUrlKey] !== undefined)
+      ? subFramePages[currentUrlKey]
+      : ((currentDomain && subFrameDomains[currentDomain] !== undefined) ? subFrameDomains[currentDomain] : true);
 
     // Tier 1: Page/Sub-frame Level Checkbox (Most Specific Override)
     // If "Include sub-frames" is explicitly CHECKED (true), show & run on current page
-    if (domainSubFrameAllowed === true) {
+    if (pageSubFrameAllowed === true) {
       return true;
     }
 
     // If "Exclude sub-frames" is UNCHECKED (false), sub-frames/page excluded
-    if (domainSubFrameAllowed === false) {
+    if (pageSubFrameAllowed === false) {
       return false;
     }
 
@@ -381,6 +388,7 @@
     // Tier 3: Global Switch
     return (state.enabledGlobal !== false);
   }
+
 
 
 
