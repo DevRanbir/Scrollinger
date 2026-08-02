@@ -477,8 +477,8 @@ function initUI(s) {
       ? subFramePages[currentUrlKey]
       : ((currentDomain && subFrameDomains[currentDomain] !== undefined) ? subFrameDomains[currentDomain] : true);
     chkSub.checked = !!pageSubFrameAllowed;
-    updateSubFramesLabel();
   }
+
 
 
 
@@ -538,8 +538,8 @@ function updateUIState(s) {
       ? subFramePages[currentUrlKey]
       : ((currentDomain && subFrameDomains[currentDomain] !== undefined) ? subFrameDomains[currentDomain] : true);
     chkSub.checked = !!pageSubFrameAllowed;
-    updateSubFramesLabel();
   }
+
 
 
 
@@ -686,8 +686,8 @@ function bindEvents() {
   if (chkSub) {
     chkSub.addEventListener('change', (e) => {
       const isChecked = e.target.checked;
-      updateSubFramesLabel();
       chrome.storage.local.get(['subFramePages', 'subFrameDomains'], (res) => {
+
         const subFramePages = res.subFramePages || {};
         const subFrameDomains = res.subFrameDomains || {};
         if (currentUrlKey) {
@@ -932,18 +932,6 @@ function updateActionButtons(isScrolling, direction) {
 }
 
 
-function updateSubFramesLabel() {
-  const chkSub = document.getElementById('chkSubFrames');
-  const lblSub = document.getElementById('lblSubFrames');
-  if (!chkSub || !lblSub) return;
-  const dict = I18N[currentLanguage] || I18N.en;
-  if (chkSub.checked) {
-    lblSub.textContent = dict.subframesInclude || "Include sub-frames";
-  } else {
-    lblSub.textContent = dict.subframesExclude || "Exclude sub-frames";
-  }
-}
-
 function applyTranslations() {
   const dict = I18N[currentLanguage] || I18N.en;
 
@@ -954,7 +942,7 @@ function applyTranslations() {
 
   setTxt('lblGlobal', dict.global);
   setTxt('lblDomain', dict.domain);
-  updateSubFramesLabel();
+  setTxt('lblSubFrames', dict.subframes || "Include sub-frames");
   setTxt('lblInsiteWidget', dict.insiteWidget);
   setTxt('lblNaturally', dict.naturally);
   setTxt('lblHowMuch', dict.howMuch);
@@ -970,4 +958,5 @@ function applyTranslations() {
     updateActionButtons(res.isScrolling, res.direction || 'down');
   });
 }
+
 
