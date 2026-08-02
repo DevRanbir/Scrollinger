@@ -7,12 +7,14 @@
 
 .as-widget-container.as-thin-strip {
   position: fixed;
+  right: 20px;
+  bottom: 20px;
   background: #262624;
   border: 2px solid #52514a;
   border-radius: 6px;
   padding: 6px 4px;
   color: #faf9f5;
-  box-shadow: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,6 +26,7 @@
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
 }
+
 
 .as-widget-container.as-hidden {
   display: none !important;

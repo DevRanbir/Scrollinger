@@ -363,10 +363,13 @@
     hostEl.id = 'auto-scroller-widget-host';
     shadowRoot = hostEl.attachShadow({ mode: 'open' });
 
-    // Inject CSS inline via fetch for cross-browser Shadow DOM compatibility
-    // (Opera and some Chromium builds block extension <link> URLs inside Shadow DOM)
     const cssUrl = safeGetURL('content/content.css');
     if (cssUrl) {
+      const cssLink = document.createElement('link');
+      cssLink.rel = 'stylesheet';
+      cssLink.href = cssUrl;
+      shadowRoot.appendChild(cssLink);
+
       fetch(cssUrl)
         .then(r => r.text())
         .then(cssText => {
@@ -374,14 +377,9 @@
           styleEl.textContent = cssText;
           shadowRoot.insertBefore(styleEl, shadowRoot.firstChild);
         })
-        .catch(() => {
-          // Fallback: try <link> element
-          const cssLink = document.createElement('link');
-          cssLink.rel = 'stylesheet';
-          cssLink.href = cssUrl;
-          shadowRoot.insertBefore(cssLink, shadowRoot.firstChild);
-        });
+        .catch(() => {});
     }
+
 
     widgetContainer = document.createElement('div');
     widgetContainer.className = 'as-widget-container as-thin-strip as-expand-up';
@@ -530,24 +528,33 @@
   }
 
   function applySavedWidgetPosition() {
-    if (!widgetContainer || !state.widgetPosition) return;
-    const { right, top, bottom, alignMode } = state.widgetPosition;
+    if (!widgetContainer) return;
+    if (state.widgetPosition) {
+      const { right, top, bottom, alignMode } = state.widgetPosition;
 
-    if (right) widgetContainer.style.right = right;
-    if (alignMode === 'top' && top) {
-      widgetContainer.style.top = top;
-      widgetContainer.style.bottom = 'auto';
-      widgetContainer.classList.add('as-expand-down');
-      widgetContainer.classList.remove('as-expand-up');
-      updateChevronDirections(true);
-    } else if (bottom) {
-      widgetContainer.style.bottom = bottom;
+      if (right) widgetContainer.style.right = right;
+      if (alignMode === 'top' && top) {
+        widgetContainer.style.top = top;
+        widgetContainer.style.bottom = 'auto';
+        widgetContainer.classList.add('as-expand-down');
+        widgetContainer.classList.remove('as-expand-up');
+        updateChevronDirections(true);
+      } else if (bottom) {
+        widgetContainer.style.bottom = bottom;
+        widgetContainer.style.top = 'auto';
+        widgetContainer.classList.add('as-expand-up');
+        widgetContainer.classList.remove('as-expand-down');
+        updateChevronDirections(false);
+      }
+    } else {
+      widgetContainer.style.right = '20px';
+      widgetContainer.style.bottom = '20px';
       widgetContainer.style.top = 'auto';
       widgetContainer.classList.add('as-expand-up');
       widgetContainer.classList.remove('as-expand-down');
-      updateChevronDirections(false);
     }
   }
+
 
   function removeWidget() {
     if (hostEl && hostEl.parentNode) {
