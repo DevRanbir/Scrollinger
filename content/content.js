@@ -195,9 +195,9 @@
     currentPath = window.location.href;
 
     safeStorageGet(null, (saved) => {
-      // Disable auto scrolling by default on any webpage load
+      // Load settings but keep isScrolling false locally only — do NOT write
+      // to shared storage here, as that would stop scrolling on all other tabs.
       state = { ...state, ...saved, isScrolling: false };
-      safeStorageSet({ isScrolling: false });
 
       if (!checkScopeEnabled()) {
         removeWidget();
