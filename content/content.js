@@ -356,17 +356,21 @@
   }
 
   function checkScopeEnabled() {
-    // 1. Global Enable Check: If globally disabled, extension must not run on any page
-    if (!state.enabledGlobal) {
+    // 1. Domain Authorization Check:
+    // If enabledDomains[currentDomain] is explicitly set, it overrides the global setting.
+    // If not set for this domain, fall back to state.enabledGlobal.
+    let domainEnabled = false;
+    if (state.enabledDomains && state.enabledDomains[currentDomain] !== undefined) {
+      domainEnabled = !!state.enabledDomains[currentDomain];
+    } else {
+      domainEnabled = (state.enabledGlobal !== false);
+    }
+
+    if (!domainEnabled) {
       return false;
     }
 
-    // 2. Domain Enable Check: If this domain is explicitly disabled, do not run
-    if (state.enabledDomains && state.enabledDomains[currentDomain] === false) {
-      return false;
-    }
-
-    // 3. Sub-Frame Check: If inside an iframe and sub-frames are excluded, do not run
+    // 2. Sub-Frame Check: If inside an iframe and sub-frames are excluded, do not run
     const subFrameDomains = state.subFrameDomains || {};
     const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
       ? subFrameDomains[currentDomain]
@@ -378,6 +382,7 @@
 
     return true;
   }
+
 
 
 
