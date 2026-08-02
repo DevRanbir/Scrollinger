@@ -742,49 +742,53 @@ input[type="number"] {
 }
 
 
-.excluded-list {
+.excluded-trees-container {
   flex: 1;
   overflow-y: auto;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 2px;
+}
+
+.tree-section {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.excluded-empty {
-  font-size: 11px;
-  color: var(--muted-foreground);
-  text-align: center;
-  padding: 16px 4px;
-  font-style: italic;
+.tree-header {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed var(--border);
 }
 
-.excluded-item {
+.tree-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.tree-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
+  gap: 8px;
   background-color: var(--muted);
   border: 1px solid var(--border);
-  border-radius: 3px;
-  padding: 6px 8px;
+  border-radius: 4px;
+  padding: 6px 10px;
   font-size: 11px;
 }
 
-.excluded-type-badge {
-  font-size: 9px;
-  font-weight: 800;
-  text-transform: uppercase;
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  padding: 1px 4px;
-  border-radius: 2px;
-  flex-shrink: 0;
-}
-
-.excluded-name {
+.tree-item-name {
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -792,6 +796,14 @@ input[type="number"] {
   color: var(--card-foreground);
   font-weight: 600;
   font-size: 11px;
+}
+
+.excluded-empty {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  text-align: center;
+  padding: 24px 4px;
+  font-style: italic;
 }
 
 .btn-enable-item {
@@ -811,6 +823,7 @@ input[type="number"] {
 .btn-enable-item:hover {
   background-color: var(--primary-hover);
 }
+
 
 
 

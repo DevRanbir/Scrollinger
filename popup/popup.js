@@ -990,85 +990,138 @@ function setupExcludedToggle() {
 }
 
 function renderExcludedItems(s) {
-  const list = document.getElementById('listExcluded');
+  const container = document.getElementById('listExcluded');
   const countEl = document.getElementById('cntExcluded');
   const countOverlayEl = document.getElementById('cntExcludedOverlay');
-  if (!list) return;
+  if (!container) return;
 
   const enabledDomains = (s && s.enabledDomains) || {};
   const pageEnabled = (s && s.pageEnabled) || (s && s.subFramePages) || {};
 
-  const excluded = [];
+  const excludedDomains = [];
+  const excludedPages = [];
 
   // 1. Excluded domains
   Object.keys(enabledDomains).forEach(domain => {
     if (enabledDomains[domain] === false) {
-      excluded.push({ type: 'domain', key: domain, label: domain });
+      excludedDomains.push(domain);
     }
   });
 
   // 2. Excluded pages
   Object.keys(pageEnabled).forEach(pageKey => {
     if (pageEnabled[pageKey] === false) {
-      excluded.push({ type: 'page', key: pageKey, label: pageKey });
+      excludedPages.push(pageKey);
     }
   });
 
-  if (countEl) countEl.textContent = excluded.length;
-  if (countOverlayEl) countOverlayEl.textContent = excluded.length;
-  list.innerHTML = '';
+  const totalCount = excludedDomains.length + excludedPages.length;
+  if (countEl) countEl.textContent = totalCount;
+  if (countOverlayEl) countOverlayEl.textContent = totalCount;
 
-  if (excluded.length === 0) {
-    const emptyLi = document.createElement('li');
-    emptyLi.className = 'excluded-empty';
-    emptyLi.textContent = 'No excluded pages or domains';
-    list.appendChild(emptyLi);
+  container.innerHTML = '';
+
+  if (totalCount === 0) {
+    const emptyDiv = document.createElement('div');
+    emptyDiv.className = 'excluded-empty';
+    emptyDiv.textContent = 'No excluded pages or domains';
+    container.appendChild(emptyDiv);
     return;
   }
 
-  excluded.forEach(item => {
-    const li = document.createElement('li');
-    li.className = 'excluded-item';
+  // Tree Section 1: Excluded Domains
+  if (excludedDomains.length > 0) {
+    const domainTreeSec = document.createElement('div');
+    domainTreeSec.className = 'tree-section';
 
-    const typeSpan = document.createElement('span');
-    typeSpan.className = 'excluded-type-badge';
-    typeSpan.textContent = item.type === 'domain' ? 'Domain' : 'Page';
+    const domainHeader = document.createElement('div');
+    domainHeader.className = 'tree-header';
+    domainHeader.textContent = `🌐 Excluded Domains (${excludedDomains.length})`;
+    domainTreeSec.appendChild(domainHeader);
 
-    const nameSpan = document.createElement('span');
-    nameSpan.className = 'excluded-name';
-    nameSpan.textContent = item.label;
-    nameSpan.title = item.label;
+    const domainUl = document.createElement('ul');
+    domainUl.className = 'tree-list';
 
-    const removeBtn = document.createElement('button');
-    removeBtn.type = 'button';
-    removeBtn.className = 'btn-enable-item';
-    removeBtn.textContent = 'Enable';
-    removeBtn.title = 'Re-enable auto-scrolling for this item';
+    excludedDomains.forEach(domain => {
+      const li = document.createElement('li');
+      li.className = 'tree-item';
 
-    removeBtn.addEventListener('click', () => {
-      if (item.type === 'domain') {
-        delete enabledDomains[item.key];
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'tree-item-name';
+      nameSpan.textContent = domain;
+      nameSpan.title = domain;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'btn-enable-item';
+      removeBtn.textContent = 'Enable';
+      removeBtn.title = 'Re-enable auto-scrolling for this domain';
+
+      removeBtn.addEventListener('click', () => {
+        delete enabledDomains[domain];
         chrome.storage.local.set({ enabledDomains }, () => {
           chrome.storage.local.get(null, (updated) => {
             initUI(updated);
           });
         });
-      } else {
-        delete pageEnabled[item.key];
+      });
+
+      li.appendChild(nameSpan);
+      li.appendChild(removeBtn);
+      domainUl.appendChild(li);
+    });
+
+    domainTreeSec.appendChild(domainUl);
+    container.appendChild(domainTreeSec);
+  }
+
+  // Tree Section 2: Excluded Pages
+  if (excludedPages.length > 0) {
+    const pageTreeSec = document.createElement('div');
+    pageTreeSec.className = 'tree-section';
+
+    const pageHeader = document.createElement('div');
+    pageHeader.className = 'tree-header';
+    pageHeader.textContent = `📄 Excluded Pages (${excludedPages.length})`;
+    pageTreeSec.appendChild(pageHeader);
+
+    const pageUl = document.createElement('ul');
+    pageUl.className = 'tree-list';
+
+    excludedPages.forEach(pageKey => {
+      const li = document.createElement('li');
+      li.className = 'tree-item';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'tree-item-name';
+      nameSpan.textContent = pageKey;
+      nameSpan.title = pageKey;
+
+      const removeBtn = document.createElement('button');
+      removeBtn.type = 'button';
+      removeBtn.className = 'btn-enable-item';
+      removeBtn.textContent = 'Enable';
+      removeBtn.title = 'Re-enable auto-scrolling for this page';
+
+      removeBtn.addEventListener('click', () => {
+        delete pageEnabled[pageKey];
         chrome.storage.local.set({ pageEnabled, subFramePages: pageEnabled }, () => {
           chrome.storage.local.get(null, (updated) => {
             initUI(updated);
           });
         });
-      }
+      });
+
+      li.appendChild(nameSpan);
+      li.appendChild(removeBtn);
+      pageUl.appendChild(li);
     });
 
-    li.appendChild(typeSpan);
-    li.appendChild(nameSpan);
-    li.appendChild(removeBtn);
-    list.appendChild(li);
-  });
+    pageTreeSec.appendChild(pageUl);
+    container.appendChild(pageTreeSec);
+  }
 }
+
 
 
 
