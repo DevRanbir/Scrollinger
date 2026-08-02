@@ -7,7 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.0.3] - 2026-08-02
+## [1.0.3] - 2026-08-03
+
+### Added
+- **Ignore This Page Control**: Added an in-site control that permanently adds the current page to the excluded-pages list, stops scrolling immediately, and removes the widget for that page.
+- **Temporary Widget Hide Control**: Added a non-persistent hide control for the in-site widget. The widget returns after a reload or page/navigation change.
+- **Fixed-Height Excluded Sites Overlay**: Kept popup height constant while showing excluded domains and pages in a separate floating layer with categorized trees.
+
+### Fixed
+- **Immediate User Interruption Stop**: Wheel, touch, and scroll-key input now cancels active scrolling, countdowns, delayed boundary checks, and native smooth-scroll animations immediately.
+- **Timer and Boundary Stability**: Prevented stale callbacks and unrelated DOM mutations from resetting or completing boundary timers incorrectly.
+- **Late Content Continuation**: Rechecks page height and pending images before reversing or stopping so lazy-loaded and late-appended content can continue scrolling.
+- **Scroll Engine Recovery**: Added a page-local watchdog that restarts a missing natural or interval scroll loop when auto-scroll remains enabled.
+- **Navigation Retention**: Preserved page/domain-scoped auto-scroll through same-domain SPA navigation while resetting temporary widget visibility on navigation.
+- **Popup Overlay Cleanup**: Removed the obsolete dropdown arrow, prevented content bleed-through, centered the close control, reduced the heavy border, and removed emoji labels from the excluded-sites UI.
+- **Stable Timer Layout**: Rendered the countdown as a non-layout overlay badge inside the widget so it can appear and disappear without leaving a blank gap, extending outside the widget, or changing widget height and control spacing.
+- **SPA Scroll Continuation**: Added navigation tokens, clean old-loop cancellation, and delayed restart after layout settlement so active page/domain scrolling continues reliably across same-page navigation.
+- **Minimized Widget Cleanup**: Kept temporary hide and ignore-page controls available in expanded mode only; minimized mode now shows only its core controls.
+- **Timer Placement**: Positioned the countdown inside the widget directly above the drag handle.
+- **Per-Page Run Limit**: Added a popup limiter in minutes (`0` disables the limit). When reached, the current page stops scrolling and suppresses further countdowns until reload or navigation.
+- **Excluded Domain Consistency**: Normalized legacy/string disabled values so excluded domains appear in the popup tree and enforce the same disabled state in the page engine.
+- **Effective Domain Visibility**: When global scrolling is disabled, the active domain is now shown in the excluded-domain tree even without a separate stored domain override.
+- **Auto-Scrolling Popup Control**: Added a dedicated Enable Auto-Scrolling checkbox that controls the active page’s scrolling state.
+- **Scope-Aware Widget Control**: The in-site widget option is disabled and unchecked for excluded pages/domains, then automatically follows scope changes until the user manually overrides it.
+- **Compact Scope Options**: Placed Auto-Scrolling and Show In-Site Floating Widget in one compact row to reduce popup height and avoid visually separating related controls.
+- **Dedicated Options Section**: Moved Auto-Scrolling and In-Site Floating Widget controls into their own compact card below the scope settings and renamed the widget label.
+- **Complete New-Control Localization**: Added translations for Auto-Scrolling, In-Site Floating Widget, and Run Limit across all 21 supported languages, with English fallback protection.
+- **Domain Auto-Scroll Opt-In**: Auto-scrolling is now disabled by default for every domain until the user enables it for that domain through the popup.
+- **Release Hardening**: Enforced the subframe preference before injecting the engine, coalesced mutation measurements, removed redundant all-tab storage broadcasts, and exposed only the stylesheet required by the widget.
+- **AMO Archive Compatibility**: Rebuilt the Chromium/Edge/Opera and Firefox ZIP packages with forward-slash paths so Firefox Add-ons validation accepts nested files.
+- **Firefox Background Compatibility**: Added Firefox's required `background.scripts` fallback to the Firefox release manifest while keeping the Chromium service-worker manifest unchanged.
+- **Firefox Minimum Versions**: Set Firefox and Firefox for Android minimum versions to 140 and 142 so the AMO data-collection manifest key is supported without compatibility warnings.
 
 ### Added & Improved
 - **Sub-Frames Default Checked & Per-Domain Controls**: *"Include/Exclude sub-frames"* is now **checked by default** (`true`). Unchecking sub-frames on a specific page/domain permanently excludes sub-frames on that domain until checked again.
