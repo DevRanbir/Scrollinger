@@ -7,7 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.3] - 2026-08-02
+
+### Fixed
+- **Same-Domain & SPA Navigation Auto-Scroll Retention**: Fixed auto-scrolling automatically stopping when navigating between pages on the same domain or clicking article links. Auto-scrolling now seamlessly continues on new pages/routes.
+- **User Scroll Interrupt Detection**: Replaced `mousedown`/`touchstart` with `wheel`, `touchmove` swipe gestures, and scroll navigation keys (`Space`, `ArrowUp`, `ArrowDown`, `PageUp`, `PageDown`). Clicking links, buttons, or page text no longer accidentally cancels auto-scrolling.
+
+---
+
 ## [1.0.2] - 2026-08-02
+
 
 ### Fixed
 - **In-Site Widget Opera & Chromium Positioning**: Added explicit default `right: 20px; bottom: 20px;` fixed coordinates in `applySavedWidgetPosition()` and `content.css` to fix floating widget rendering when `widgetPosition` is uninitialized.

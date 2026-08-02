@@ -247,14 +247,28 @@
   }
 
   function handleURLChange() {
+    const wasScrolling = state.isScrolling;
     currentPath = window.location.href;
     currentDomain = window.location.hostname;
     bottomReachedTime = null;
     lastHeightChangeTime = performance.now();
 
     setTimeout(() => {
-      loadAndApplySettings();
-    }, 400);
+      safeStorageGet(null, (saved) => {
+        state = { ...state, ...saved };
+        if (!checkScopeEnabled()) {
+          removeWidget();
+          stopScrolling();
+          return;
+        }
+        setupWidget();
+        syncStateUI();
+        if (wasScrolling || state.isScrolling) {
+          state.isScrolling = true;
+          startScrolling();
+        }
+      });
+    }, 300);
   }
 
   function setupUserInteractionListeners() {
@@ -273,15 +287,17 @@
       }
     };
 
+    // Listen to genuine user scroll gestures (wheel, touchmove swipe, scroll keys)
+    // Clicks/mousedown on links and text should NOT interrupt auto-scrolling.
     window.addEventListener('wheel', handleUserInteraction, { passive: true });
-    window.addEventListener('touchstart', handleUserInteraction, { passive: true });
-    window.addEventListener('mousedown', handleUserInteraction, { passive: true });
+    window.addEventListener('touchmove', handleUserInteraction, { passive: true });
     window.addEventListener('keydown', (e) => {
       if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Space', ' ', 'Home', 'End'].includes(e.key)) {
         handleUserInteraction(e);
       }
     }, { passive: true });
   }
+
 
   function hasPendingImages() {
     try {
