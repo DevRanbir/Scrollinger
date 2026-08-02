@@ -1,0 +1,196 @@
+/* Content Floating Widget Styles (Ultra-Thin Strip Neo-Brutalist Layout - Uniform Terracotta/Charcoal Palette) */
+:host {
+  all: initial;
+  z-index: 2147483647 !important;
+  font-family: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+.as-widget-container.as-thin-strip {
+  position: fixed;
+  background: #262624;
+  border: 2px solid #52514a;
+  border-radius: 6px;
+  padding: 6px 4px;
+  color: #faf9f5;
+  box-shadow: none !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+  z-index: 2147483647;
+  transition: opacity 0.15s ease;
+  width: 38px;
+  box-sizing: border-box;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.as-widget-container.as-hidden {
+  display: none !important;
+}
+
+/* Expanded & Collapsed View Switching */
+.as-expanded-view {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.as-collapsed-view {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.as-widget-container.as-collapsed {
+  width: 38px;
+  padding: 6px 4px;
+}
+
+.as-widget-container.as-collapsed .as-expanded-view {
+  display: none !important;
+}
+
+.as-widget-container.as-collapsed .as-collapsed-view {
+  display: flex !important;
+}
+
+/* Drag Handle */
+.as-drag-handle {
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #b7b5a9;
+  padding: 4px 0;
+  width: 100%;
+}
+
+.as-drag-bottom {
+  margin-top: 2px;
+  padding-top: 4px;
+}
+
+.as-drag-handle:hover {
+  color: #d97757;
+}
+
+.as-drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Buttons - Ultra Compact Square (Uniform Neo-Brutalist Palette) */
+.as-btn {
+  background: #30302e;
+  border: 2px solid #52514a;
+  color: #faf9f5;
+  border-radius: 4px;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+}
+
+.as-btn:hover {
+  background: #3e3e38;
+  border-color: #d97757;
+  color: #ffffff;
+}
+
+.as-strip-btn {
+  width: 28px;
+  height: 28px;
+}
+
+/* Active Button State - Uniform Terracotta (#d97757), NO green or bright red */
+.as-btn.as-active,
+.as-btn.as-auto-active {
+  background: #d97757 !important;
+  border-color: #d97757 !important;
+  color: #ffffff !important;
+}
+
+.as-btn.as-active:hover,
+.as-btn.as-auto-active:hover {
+  background: #e08363 !important;
+  border-color: #e08363 !important;
+}
+
+/* Vertical Speed Slider Container */
+.as-slider-vert-container {
+  height: 120px;
+  width: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 4px 0;
+  border: none !important;
+  background: transparent !important;
+}
+
+.as-widget-slider-vert {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 110px;
+  height: 6px;
+  transform: rotate(-90deg);
+  background: #3e3e38;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  border: none !important;
+}
+
+.as-widget-slider-vert::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 2px;
+  background: #d97757;
+  border: 1.5px solid #ffffff;
+  cursor: pointer;
+}
+
+.as-speed-val {
+  font-size: 9px;
+  font-weight: 800;
+  color: #b7b5a9;
+  letter-spacing: -0.2px;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.as-timer-badge {
+  font-size: 9px;
+  font-weight: 800;
+  color: #b7b5a9;
+  background: transparent !important;
+  border: none !important;
+  padding: 0;
+  margin: 2px 0;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.as-timer-badge.as-hidden {
+  display: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+

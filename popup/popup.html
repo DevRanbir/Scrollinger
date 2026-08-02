@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scrollinger</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo-icon">
+          <svg width="16" height="18" viewBox="0 0 24 24" fill="none" stroke="#d97757" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="7" y="2" width="10" height="20" rx="5" stroke="#d97757" stroke-width="2.2" fill="none"></rect>
+            <rect x="10.5" y="5" width="3" height="6.5" rx="1.5" fill="#d97757" stroke="none"></rect>
+          </svg>
+        </div>
+
+        <div class="title-domain-wrap">
+          <div class="title-row">
+            <h1 class="brand-title">Scrollinger</h1>
+
+            <span class="domain-badge" id="currentDomainBadge" title="Current domain">Detecting...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="custom-select-container" id="customLangContainer">
+          <button type="button" class="custom-select-trigger" id="langSelectTrigger" title="Select Language">
+            <span id="selectedLangText">English</span>
+            <svg class="select-chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="1,1 5,5 9,1"/></svg>
+          </button>
+          <div class="custom-select-options as-hidden" id="langSelectOptions">
+            <div class="dropdown-search-wrap">
+              <input type="text" id="langSearchInput" class="dropdown-search" placeholder="Search..." autocomplete="off" />
+            </div>
+            <div class="options-list" id="langOptionsList">
+              <div class="custom-option active" data-value="en">English</div>
+              <div class="custom-option" data-value="hi">हिन्दी (Hindi)</div>
+              <div class="custom-option" data-value="bn">বাংলা (Bengali)</div>
+              <div class="custom-option" data-value="te">తెలుగు (Telugu)</div>
+              <div class="custom-option" data-value="mr">मराठी (Marathi)</div>
+              <div class="custom-option" data-value="ta">தமிழ் (Tamil)</div>
+              <div class="custom-option" data-value="gu">ગુજરાતી (Gujarati)</div>
+              <div class="custom-option" data-value="kn">ಕನ್ನಡ (Kannada)</div>
+              <div class="custom-option" data-value="ml">മലയാളം (Malayalam)</div>
+              <div class="custom-option" data-value="pa">ਪੰਜਾਬੀ (Punjabi)</div>
+              <div class="custom-option" data-value="or">ଓଡ଼ିଆ (Odia)</div>
+              <div class="custom-option" data-value="es">Español (Spanish)</div>
+              <div class="custom-option" data-value="fr">Français (French)</div>
+              <div class="custom-option" data-value="de">Deutsch (German)</div>
+              <div class="custom-option" data-value="ja">日本語 (Japanese)</div>
+              <div class="custom-option" data-value="zh">中文 (Chinese)</div>
+              <div class="custom-option" data-value="ru">Русский (Russian)</div>
+              <div class="custom-option" data-value="ar">العربية (Arabic)</div>
+              <div class="custom-option" data-value="pt">Português (Portuguese)</div>
+              <div class="custom-option" data-value="it">Italiano (Italian)</div>
+              <div class="custom-option" data-value="ko">한국어 (Korean)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+
+    <!-- Scope / Domain Checkboxes (Matching User Screenshot 2) -->
+    <section class="card scope-section">
+      <div class="checkbox-group">
+        <label class="checkbox-container">
+          <input type="checkbox" id="chkGlobal" checked />
+          <span class="custom-checkbox"></span>
+          <span class="label-text" id="lblGlobal">Enabled (Globally)</span>
+        </label>
+        
+        <label class="checkbox-container">
+          <input type="checkbox" id="chkDomain" checked />
+          <span class="custom-checkbox"></span>
+          <span class="label-text" id="lblDomain">Enabled (This Domain)</span>
+        </label>
+
+        <label class="checkbox-container sub-checkbox">
+          <span class="indent-arrow">→</span>
+          <input type="checkbox" id="chkSubFrames" />
+          <span class="custom-checkbox"></span>
+          <span class="label-text" id="lblSubFrames">Include/Exclude sub-frames</span>
+        </label>
+
+        <label class="checkbox-container sub-checkbox">
+          <span class="indent-arrow">→</span>
+          <input type="checkbox" id="chkInsiteWidget" checked />
+          <span class="custom-checkbox"></span>
+          <span class="label-text" id="lblInsiteWidget">Show In-Site Floating Widget</span>
+        </label>
+
+        <label class="checkbox-container">
+          <input type="checkbox" id="chkStopOnInteraction" checked />
+          <span class="custom-checkbox"></span>
+          <span class="label-text" id="lblStopOnInteraction">Stop scrolling on user interaction</span>
+        </label>
+      </div>
+    </section>
+
+
+    <!-- Scroll Mode Selection (Matching User Screenshot 1) -->
+    <section class="card mode-section">
+      <div class="mode-buttons">
+        <button type="button" class="mode-btn active" id="btnModeNatural" data-mode="natural">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+          </svg>
+          <span id="lblNaturally">Naturally</span>
+        </button>
+        <button type="button" class="mode-btn" id="btnModeInterval" data-mode="interval">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span id="lblIntervalMode">Every 15 seconds</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Controls / Sliders (Matching User Screenshot 1) -->
+    <section class="card slider-section">
+      <!-- How much to scroll -->
+      <div class="slider-control">
+        <div class="slider-label">
+          <span id="lblHowMuch">How much to scroll</span>
+        </div>
+        <div class="slider-row">
+          <div class="range-wrapper">
+            <input type="range" id="rngAmount" min="50" max="5000" step="50" value="350" />
+          </div>
+          <div class="custom-num-wrap">
+            <input type="number" id="numAmount" min="50" max="5000" step="50" value="350" class="num-input" />
+
+            <div class="spinner-btns">
+              <button type="button" class="spin-btn" id="btnNumAmountUp" title="Increase">
+                <svg width="8" height="5" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1,5 5,1 9,5"/></svg>
+              </button>
+              <button type="button" class="spin-btn" id="btnNumAmountDown" title="Decrease">
+                <svg width="8" height="5" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1,1 5,5 9,1"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Scroll Interval -->
+      <div class="slider-control">
+        <div class="slider-label">
+          <span id="lblScrollInterval">Scroll Interval (sec / speed)</span>
+        </div>
+        <div class="slider-row">
+          <div class="range-wrapper">
+            <input type="range" id="rngInterval" min="1" max="60" step="1" value="15" />
+          </div>
+          <div class="custom-num-wrap">
+            <input type="number" id="numInterval" min="1" max="60" value="15" class="num-input" />
+            <div class="spinner-btns">
+              <button type="button" class="spin-btn" id="btnNumIntervalUp" title="Increase">
+                <svg width="8" height="5" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1,5 5,1 9,5"/></svg>
+              </button>
+              <button type="button" class="spin-btn" id="btnNumIntervalDown" title="Decrease">
+                <svg width="8" height="5" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1,1 5,5 9,1"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Direction & Auto Reverse options -->
+      <div class="direction-row">
+        <div class="dir-toggle-group">
+          <button type="button" class="dir-btn active" id="btnDirDown" data-dir="down">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+            <span id="lblDown">Down</span>
+          </button>
+          <button type="button" class="dir-btn" id="btnDirUp" data-dir="up">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            <span id="lblUp">Up</span>
+          </button>
+        </div>
+        
+        <label class="checkbox-container inline-check">
+          <input type="checkbox" id="chkAutoReverse" checked />
+          <span class="custom-checkbox"></span>
+          <span class="label-text" id="lblAutoReverse">Auto-Reverse</span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Main Action Button (Merged Single Toggle) -->
+    <footer class="action-footer">
+      <button type="button" class="action-btn btn-single-toggle" id="btnScrollStart">
+        <svg class="action-svg-icon" id="svgActionIcon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span id="lblScrollAction">Scroll Down</span>
+      </button>
+    </footer>
+
+    <!-- Developer Credit Footer -->
+    <div class="dev-credit-footer">
+      <span>Made with ❤️ by </span>
+      <a href="https://github.com/devranbir" id="lnkGithub" target="_blank" rel="noopener noreferrer">github.com/devranbir</a>
+    </div>
+
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+
