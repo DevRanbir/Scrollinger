@@ -47,11 +47,13 @@ body {
 }
 
 .app-container {
+  position: relative;
   padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 
 /* Redesigned Balanced Header */
 .app-header {
@@ -674,23 +676,24 @@ input[type="number"] {
   transform: rotate(180deg);
 }
 
-/* Floating Overlay Layer (Keeps Popup Height 100% Constant) */
+/* Floating Overlay Modal Panel (100% Solid Opacity - Zero Text Clashing) */
 .excluded-overlay {
   position: absolute;
-  top: 55px;
-  left: 12px;
-  right: 12px;
-  bottom: 50px;
-  background-color: var(--card-bg);
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  background-color: #262624 !important;
   border: 2px solid var(--primary);
   border-radius: var(--radius);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
-  z-index: 9999;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.95);
+  z-index: 99999;
   display: flex;
   flex-direction: column;
-  padding: 12px;
+  padding: 14px;
   gap: 10px;
 }
+
 
 .excluded-overlay.as-hidden {
   display: none;
