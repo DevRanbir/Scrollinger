@@ -297,11 +297,17 @@
       }
 
       if (state.stopOnInteraction !== false && state.isScrolling) {
-        state.isScrolling = false;
-        // Pause scrolling locally on this tab only — do NOT call safeStorageSet
-        // so other open tabs continue scrolling and storage is not overwritten.
-        stopScrolling();
-        syncStateUI();
+        if (bottomReachedTime !== null) {
+          // User interrupted during the wait/timer countdown — skip the wait immediately
+          // and execute the pending action (auto-reverse or stop) right now.
+          skipTimer();
+        } else {
+          // User interrupted during active scrolling — stop locally on this tab only.
+          // Do NOT call safeStorageSet so other open tabs continue scrolling.
+          state.isScrolling = false;
+          stopScrolling();
+          syncStateUI();
+        }
       }
 
     };
@@ -315,6 +321,27 @@
         handleUserInteraction(e);
       }
     }, { passive: true });
+  }
+
+  // Immediately resolves the pending timer action without waiting for the countdown.
+  // If autoReverse is on, flips direction and continues scrolling;
+  // otherwise stops scrolling cleanly.
+  function skipTimer() {
+    bottomReachedTime = null;
+    updateTimerBadges(0);
+
+    if (state.autoReverse) {
+      // Flip direction and keep scrolling — the RAF/interval loop will pick it up
+      const newDir = state.direction === 'down' ? 'up' : 'down';
+      state.direction = newDir;
+      safeStorageSet({ direction: newDir });
+    } else {
+      // Stop cleanly
+      state.isScrolling = false;
+      safeStorageSet({ isScrolling: false });
+      stopScrolling();
+      syncStateUI();
+    }
   }
 
 
