@@ -356,19 +356,17 @@
   }
 
   function checkScopeEnabled() {
-    // Step 1: Check if domain is enabled (Domain-level toggle with Global fallback)
-    let domainEnabled = false;
-    if (state.enabledDomains && state.enabledDomains[currentDomain] !== undefined) {
-      domainEnabled = !!state.enabledDomains[currentDomain];
-    } else {
-      domainEnabled = (state.enabledGlobal !== false);
-    }
-
-    if (!domainEnabled) {
+    // 1. Global Enable Check: If globally disabled, extension must not run on any page
+    if (!state.enabledGlobal) {
       return false;
     }
 
-    // Step 2: Domain is ENABLED -> Now proceed to sub-frame evaluation
+    // 2. Domain Enable Check: If this domain is explicitly disabled, do not run
+    if (state.enabledDomains && state.enabledDomains[currentDomain] === false) {
+      return false;
+    }
+
+    // 3. Sub-Frame Check: If inside an iframe and sub-frames are excluded, do not run
     const subFrameDomains = state.subFrameDomains || {};
     const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
       ? subFrameDomains[currentDomain]
@@ -380,6 +378,7 @@
 
     return true;
   }
+
 
 
   function setupWidget() {

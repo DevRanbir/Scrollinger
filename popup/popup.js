@@ -518,11 +518,9 @@ function updateUIState(s) {
   const chkDomain = document.getElementById('chkDomain');
   if (chkDomain && currentDomain) {
     const enabledDomains = s.enabledDomains || {};
-    const domainEnabled = (enabledDomains[currentDomain] !== undefined)
-      ? enabledDomains[currentDomain]
-      : (s.enabledGlobal !== false);
-    chkDomain.checked = !!domainEnabled;
+    chkDomain.checked = enabledDomains[currentDomain] !== false;
   }
+
 
 
   const chkSub = document.getElementById('chkSubFrames');
