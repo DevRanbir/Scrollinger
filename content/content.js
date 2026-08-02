@@ -195,9 +195,7 @@
     currentPath = window.location.href;
 
     safeStorageGet(null, (saved) => {
-      // Load settings but keep isScrolling false locally only — do NOT write
-      // to shared storage here, as that would stop scrolling on all other tabs.
-      state = { ...state, ...saved, isScrolling: false };
+      state = { ...state, ...saved };
 
       if (!checkScopeEnabled()) {
         removeWidget();
@@ -206,10 +204,20 @@
       }
 
       setupWidget();
-      syncStateUI();
-      stopScrolling();
+
+      // If instantAutoScroll (Auto-Start mode) is enabled or isScrolling is active, auto-start on load
+      if (state.instantAutoScroll || state.isScrolling) {
+        state.isScrolling = true;
+        syncStateUI();
+        startScrolling();
+      } else {
+        state.isScrolling = false;
+        syncStateUI();
+        stopScrolling();
+      }
     });
   }
+
 
   function onPageReady() {
     if (!checkScopeEnabled()) {
@@ -281,10 +289,12 @@
 
       if (state.stopOnInteraction !== false && state.isScrolling) {
         state.isScrolling = false;
-        safeStorageSet({ isScrolling: false });
+        // Pause scrolling locally on this tab only — do NOT call safeStorageSet
+        // so other open tabs continue scrolling and storage is not overwritten.
         stopScrolling();
         syncStateUI();
       }
+
     };
 
     // Listen to genuine user scroll gestures (wheel, touchmove swipe, scroll keys)

@@ -7,7 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.4] - 2026-08-02
+
+### Fixed
+- **Tab-Local User Interrupt Isolation**: Pausing scrolling via user interaction (mouse wheel / arrow keys) now pauses **locally on that tab only** without writing `isScrolling: false` to shared storage. Other open tabs continue scrolling uninterrupted.
+- **Reload & New Tab Auto-Start**: Preserved global scrolling state and Auto-Start configuration so reloading pages or opening new tabs on enabled domains starts auto-scrolling reliably.
+
+---
+
 ## [1.0.3] - 2026-08-02
+
 
 ### Fixed
 - **Same-Domain & SPA Navigation Auto-Scroll Retention**: Fixed auto-scrolling automatically stopping when navigating between pages on the same domain or clicking article links. Auto-scrolling now seamlessly continues on new pages/routes.
