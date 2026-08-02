@@ -457,8 +457,12 @@ function initUI(s) {
   const chkDomain = document.getElementById('chkDomain');
   if (chkDomain) {
     const enabledDomains = s.enabledDomains || {};
-    chkDomain.checked = currentDomain ? (enabledDomains[currentDomain] !== false) : true;
+    const domainEnabled = (currentDomain && enabledDomains[currentDomain] !== undefined)
+      ? enabledDomains[currentDomain]
+      : (s.enabledGlobal !== false);
+    chkDomain.checked = !!domainEnabled;
   }
+
 
   const chkSub = document.getElementById('chkSubFrames');
   if (chkSub) {
@@ -512,9 +516,14 @@ function updateUIState(s) {
   if (chkGlobal && s.enabledGlobal !== undefined) chkGlobal.checked = s.enabledGlobal;
 
   const chkDomain = document.getElementById('chkDomain');
-  if (chkDomain && s.enabledDomains && currentDomain) {
-    chkDomain.checked = s.enabledDomains[currentDomain] !== false;
+  if (chkDomain && currentDomain) {
+    const enabledDomains = s.enabledDomains || {};
+    const domainEnabled = (enabledDomains[currentDomain] !== undefined)
+      ? enabledDomains[currentDomain]
+      : (s.enabledGlobal !== false);
+    chkDomain.checked = !!domainEnabled;
   }
+
 
   const chkSub = document.getElementById('chkSubFrames');
   if (chkSub) {

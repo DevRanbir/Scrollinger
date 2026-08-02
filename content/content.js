@@ -356,6 +356,19 @@
   }
 
   function checkScopeEnabled() {
+    // Step 1: Check if domain is enabled (Domain-level toggle with Global fallback)
+    let domainEnabled = false;
+    if (state.enabledDomains && state.enabledDomains[currentDomain] !== undefined) {
+      domainEnabled = !!state.enabledDomains[currentDomain];
+    } else {
+      domainEnabled = (state.enabledGlobal !== false);
+    }
+
+    if (!domainEnabled) {
+      return false;
+    }
+
+    // Step 2: Domain is ENABLED -> Now proceed to sub-frame evaluation
     const subFrameDomains = state.subFrameDomains || {};
     const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
       ? subFrameDomains[currentDomain]
@@ -365,14 +378,9 @@
       return false;
     }
 
-    if (!state.enabledGlobal) {
-      return false;
-    }
-    if (state.enabledDomains && state.enabledDomains[currentDomain] === false) {
-      return false;
-    }
     return true;
   }
+
 
   function setupWidget() {
     if (!state.showInsiteButton) {
