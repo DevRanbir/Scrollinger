@@ -636,7 +636,7 @@ input[type="number"] {
   border-color: var(--primary);
 }
 
-/* Excluded Sites & Pages Dropdown */
+/* Excluded Sites & Pages Floating Overlay Layer */
 .excluded-section {
   margin-top: 10px;
   border-top: 1px solid var(--border);
@@ -674,33 +674,82 @@ input[type="number"] {
   transform: rotate(180deg);
 }
 
-.excluded-list-container {
-  margin-top: 6px;
-  max-height: 140px;
-  overflow-y: auto;
-  border: 1px solid var(--border);
+/* Floating Overlay Layer (Keeps Popup Height 100% Constant) */
+.excluded-overlay {
+  position: absolute;
+  top: 55px;
+  left: 12px;
+  right: 12px;
+  bottom: 50px;
+  background-color: var(--card-bg);
+  border: 2px solid var(--primary);
   border-radius: var(--radius);
-  background-color: var(--muted);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  gap: 10px;
 }
 
-.excluded-list-container.as-hidden {
+.excluded-overlay.as-hidden {
   display: none;
 }
 
+.excluded-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.excluded-overlay-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.btn-close-overlay {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--card-foreground);
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-close-overlay:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background-color: var(--muted);
+}
+
 .excluded-list {
+  flex: 1;
+  overflow-y: auto;
   list-style: none;
   margin: 0;
-  padding: 4px 6px;
+  padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .excluded-empty {
   font-size: 11px;
   color: var(--muted-foreground);
   text-align: center;
-  padding: 8px 4px;
+  padding: 16px 4px;
   font-style: italic;
 }
 
@@ -709,10 +758,10 @@ input[type="number"] {
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  background-color: var(--card-bg);
+  background-color: var(--muted);
   border: 1px solid var(--border);
   border-radius: 3px;
-  padding: 4px 8px;
+  padding: 6px 8px;
   font-size: 11px;
 }
 
@@ -742,7 +791,7 @@ input[type="number"] {
   color: var(--primary-foreground);
   border: none;
   border-radius: 3px;
-  padding: 2px 6px;
+  padding: 3px 8px;
   font-family: inherit;
   font-size: 10px;
   font-weight: 700;
@@ -754,5 +803,6 @@ input[type="number"] {
 .btn-enable-item:hover {
   background-color: var(--primary-hover);
 }
+
 
 

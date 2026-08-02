@@ -109,13 +109,9 @@
           <span class="excluded-btn-title">Excluded Sites & Pages (<span id="cntExcluded">0</span>)</span>
           <span class="chevron" id="chevronExcluded">▼</span>
         </button>
-        <div class="excluded-list-container as-hidden" id="containerExcluded">
-          <ul class="excluded-list" id="listExcluded">
-            <!-- Dynamically populated -->
-          </ul>
-        </div>
       </div>
     </section>
+
 
 
 
@@ -225,7 +221,19 @@
       <a href="https://github.com/devranbir" id="lnkGithub" target="_blank" rel="noopener noreferrer">github.com/devranbir</a>
     </div>
 
+    <!-- Excluded Sites & Pages Floating Overlay Layer -->
+    <div class="excluded-overlay as-hidden" id="containerExcluded">
+      <div class="excluded-overlay-header">
+        <span class="excluded-overlay-title">Excluded Sites & Pages (<span id="cntExcludedOverlay">0</span>)</span>
+        <button type="button" class="btn-close-overlay" id="btnCloseExcludedOverlay" title="Close">✕</button>
+      </div>
+      <ul class="excluded-list" id="listExcluded">
+        <!-- Dynamically populated -->
+      </ul>
+    </div>
+
   </div>
+
 
   <script src="popup.js"></script>
 </body>

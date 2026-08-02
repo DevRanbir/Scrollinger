@@ -964,25 +964,36 @@ function applyTranslations() {
 
 function setupExcludedToggle() {
   const btnToggle = document.getElementById('btnToggleExcluded');
+  const btnClose = document.getElementById('btnCloseExcludedOverlay');
   const container = document.getElementById('containerExcluded');
-  if (!btnToggle || !container) return;
+  if (!container) return;
 
-  btnToggle.addEventListener('click', () => {
-    const isHidden = container.classList.contains('as-hidden');
-    if (isHidden) {
-      container.classList.remove('as-hidden');
-      btnToggle.classList.add('open');
-    } else {
+  if (btnToggle) {
+    btnToggle.addEventListener('click', () => {
+      const isHidden = container.classList.contains('as-hidden');
+      if (isHidden) {
+        container.classList.remove('as-hidden');
+        btnToggle.classList.add('open');
+      } else {
+        container.classList.add('as-hidden');
+        btnToggle.classList.remove('open');
+      }
+    });
+  }
+
+  if (btnClose) {
+    btnClose.addEventListener('click', () => {
       container.classList.add('as-hidden');
-      btnToggle.classList.remove('open');
-    }
-  });
+      if (btnToggle) btnToggle.classList.remove('open');
+    });
+  }
 }
 
 function renderExcludedItems(s) {
   const list = document.getElementById('listExcluded');
   const countEl = document.getElementById('cntExcluded');
-  if (!list || !countEl) return;
+  const countOverlayEl = document.getElementById('cntExcludedOverlay');
+  if (!list) return;
 
   const enabledDomains = (s && s.enabledDomains) || {};
   const pageEnabled = (s && s.pageEnabled) || (s && s.subFramePages) || {};
@@ -1003,7 +1014,8 @@ function renderExcludedItems(s) {
     }
   });
 
-  countEl.textContent = excluded.length;
+  if (countEl) countEl.textContent = excluded.length;
+  if (countOverlayEl) countOverlayEl.textContent = excluded.length;
   list.innerHTML = '';
 
   if (excluded.length === 0) {
@@ -1057,6 +1069,7 @@ function renderExcludedItems(s) {
     list.appendChild(li);
   });
 }
+
 
 
 
