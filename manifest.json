@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Scrollinger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Auto-scroll web pages with smooth natural or interval scrolling, domain-level rules, and an interactive in-site floating widget.",
   "permissions": [
     "storage",
