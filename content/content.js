@@ -13,9 +13,11 @@
   let state = {
     enabledGlobal: true,
     enabledDomains: {},
+    pageEnabled: {},
     subFrameDomains: {},
     subFramePages: {},
     includeSubFrames: true,
+
 
     scrollMode: 'natural',
 
@@ -361,33 +363,21 @@
   }
 
   function checkScopeEnabled() {
-    const subFramePages = state.subFramePages || {};
-    const subFrameDomains = state.subFrameDomains || {};
-
-    const pageSubFrameAllowed = (currentUrlKey && subFramePages[currentUrlKey] !== undefined)
-      ? subFramePages[currentUrlKey]
-      : ((currentDomain && subFrameDomains[currentDomain] !== undefined) ? subFrameDomains[currentDomain] : true);
-
-    // Tier 1: Page/Sub-frame Level Checkbox (Most Specific Override)
-    // If "Include sub-frames" is explicitly CHECKED (true), show & run on current page
-    if (pageSubFrameAllowed === true) {
-      return true;
+    // Tier 1: Page Level (Highest Specificity Priority)
+    const pageEnabled = state.pageEnabled || state.subFramePages || {};
+    if (currentUrlKey && pageEnabled[currentUrlKey] !== undefined) {
+      return !!pageEnabled[currentUrlKey];
     }
 
-    // If "Exclude sub-frames" is UNCHECKED (false), sub-frames/page excluded
-    if (pageSubFrameAllowed === false) {
-      return false;
+    // Tier 2: Domain Level (Medium Specificity Priority)
+    if (state.enabledDomains && currentDomain && state.enabledDomains[currentDomain] !== undefined) {
+      return !!state.enabledDomains[currentDomain];
     }
 
-    // Tier 2: Domain Authorization Check
-    if (state.enabledDomains && state.enabledDomains[currentDomain] !== undefined) {
-      if (state.enabledDomains[currentDomain] === false) return false;
-      if (state.enabledDomains[currentDomain] === true) return true;
-    }
-
-    // Tier 3: Global Switch
+    // Tier 3: Global Level (Base Priority Default)
     return (state.enabledGlobal !== false);
   }
+
 
 
 

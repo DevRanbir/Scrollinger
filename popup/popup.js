@@ -5,7 +5,8 @@ const I18N = {
   en: {
     global: "Enabled (Globally)",
     domain: "Enabled (This Domain)",
-    subframes: "Include/Exclude sub-frames",
+    page: "Enabled (This Page)",
+
     insiteWidget: "Show In-Site Floating Widget",
     naturally: "Naturally",
     intervalMode: "Every {sec} seconds",
@@ -469,15 +470,16 @@ function initUI(s) {
   }
 
 
-  const chkSub = document.getElementById('chkSubFrames');
-  if (chkSub) {
-    const subFramePages = s.subFramePages || {};
-    const subFrameDomains = s.subFrameDomains || {};
-    const pageSubFrameAllowed = (currentUrlKey && subFramePages[currentUrlKey] !== undefined)
-      ? subFramePages[currentUrlKey]
-      : ((currentDomain && subFrameDomains[currentDomain] !== undefined) ? subFrameDomains[currentDomain] : true);
-    chkSub.checked = !!pageSubFrameAllowed;
+  const chkPage = document.getElementById('chkPage');
+  if (chkPage) {
+    const pageEnabled = s.pageEnabled || s.subFramePages || {};
+    const enabledDomains = s.enabledDomains || {};
+    const pageVal = (currentUrlKey && pageEnabled[currentUrlKey] !== undefined)
+      ? pageEnabled[currentUrlKey]
+      : ((currentDomain && enabledDomains[currentDomain] !== undefined) ? enabledDomains[currentDomain] : (s.enabledGlobal !== false));
+    chkPage.checked = !!pageVal;
   }
+
 
 
 
@@ -530,15 +532,16 @@ function updateUIState(s) {
 
 
 
-  const chkSub = document.getElementById('chkSubFrames');
-  if (chkSub) {
-    const subFramePages = s.subFramePages || {};
-    const subFrameDomains = s.subFrameDomains || {};
-    const pageSubFrameAllowed = (currentUrlKey && subFramePages[currentUrlKey] !== undefined)
-      ? subFramePages[currentUrlKey]
-      : ((currentDomain && subFrameDomains[currentDomain] !== undefined) ? subFrameDomains[currentDomain] : true);
-    chkSub.checked = !!pageSubFrameAllowed;
+  const chkPage = document.getElementById('chkPage');
+  if (chkPage && currentUrlKey) {
+    const pageEnabled = s.pageEnabled || s.subFramePages || {};
+    const enabledDomains = s.enabledDomains || {};
+    const pageVal = (pageEnabled[currentUrlKey] !== undefined)
+      ? pageEnabled[currentUrlKey]
+      : ((currentDomain && enabledDomains[currentDomain] !== undefined) ? enabledDomains[currentDomain] : (s.enabledGlobal !== false));
+    chkPage.checked = !!pageVal;
   }
+
 
 
 
@@ -682,28 +685,23 @@ function bindEvents() {
     });
   }
 
-  const chkSub = document.getElementById('chkSubFrames');
-  if (chkSub) {
-    chkSub.addEventListener('change', (e) => {
+  const chkPage = document.getElementById('chkPage');
+  if (chkPage) {
+    chkPage.addEventListener('change', (e) => {
       const isChecked = e.target.checked;
-      chrome.storage.local.get(['subFramePages', 'subFrameDomains'], (res) => {
-
-        const subFramePages = res.subFramePages || {};
-        const subFrameDomains = res.subFrameDomains || {};
+      chrome.storage.local.get(['pageEnabled', 'subFramePages'], (res) => {
+        const pageEnabled = res.pageEnabled || res.subFramePages || {};
         if (currentUrlKey) {
-          subFramePages[currentUrlKey] = isChecked;
-        }
-        if (currentDomain) {
-          subFrameDomains[currentDomain] = isChecked;
+          pageEnabled[currentUrlKey] = isChecked;
         }
         chrome.storage.local.set({
-          subFramePages,
-          subFrameDomains,
-          includeSubFrames: isChecked
+          pageEnabled,
+          subFramePages: pageEnabled
         });
       });
     });
   }
+
 
 
 
@@ -942,8 +940,9 @@ function applyTranslations() {
 
   setTxt('lblGlobal', dict.global);
   setTxt('lblDomain', dict.domain);
-  setTxt('lblSubFrames', dict.subframes || "Include sub-frames");
+  setTxt('lblPage', dict.page || "Enabled (This Page)");
   setTxt('lblInsiteWidget', dict.insiteWidget);
+
   setTxt('lblNaturally', dict.naturally);
   setTxt('lblHowMuch', dict.howMuch);
   setTxt('lblScrollInterval', dict.scrollInterval);
