@@ -145,7 +145,7 @@ function generateBigBoldMouseIconPng(size) {
 }
 
 const iconsDir = path.join(__dirname);
-[16, 48, 128].forEach((size) => {
+[16, 48, 64, 128].forEach((size) => {
   const buf = generateBigBoldMouseIconPng(size);
   fs.writeFileSync(path.join(iconsDir, `icon${size}.png`), buf);
   console.log(`Successfully generated big bold mouse icon${size}.png`);
