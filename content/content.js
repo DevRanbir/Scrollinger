@@ -873,6 +873,11 @@
   }
 
   function startScrolling() {
+    if (!checkScopeEnabled()) {
+      stopScrolling();
+      return;
+    }
+
     stopScrolling();
     bottomReachedTime = null;
     lastHeightChangeTime = performance.now();
@@ -884,6 +889,7 @@
       runIntervalScroll();
     }
   }
+
 
   function restartScrolling() {
     if (state.isScrolling) {
@@ -908,10 +914,11 @@
     let lastTime = performance.now();
 
     function step(now) {
-      if (!state.isScrolling) {
+      if (!state.isScrolling || !checkScopeEnabled()) {
         stopScrolling();
         return;
       }
+
 
       const delta = (now - lastTime) / 1000;
       lastTime = now;
@@ -999,10 +1006,11 @@
     const intervalMs = Math.max(1, state.scrollInterval) * 1000;
 
     scrollTimerId = setInterval(() => {
-      if (!state.isScrolling) {
+      if (!state.isScrolling || !checkScopeEnabled()) {
         stopScrolling();
         return;
       }
+
 
       const scrollTarget = getScrollTarget();
       const currentPos = getScrollPos(scrollTarget);
