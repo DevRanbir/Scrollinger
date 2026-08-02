@@ -101,10 +101,22 @@
         <label class="checkbox-container">
           <input type="checkbox" id="chkStopOnInteraction" checked />
           <span class="custom-checkbox"></span>
-          <span class="label-text" id="lblStopOnInteraction">Stop scrolling on user interaction</span>
         </label>
       </div>
+
+      <div class="excluded-section">
+        <button type="button" class="excluded-toggle-btn" id="btnToggleExcluded">
+          <span class="excluded-btn-title">Excluded Sites & Pages (<span id="cntExcluded">0</span>)</span>
+          <span class="chevron" id="chevronExcluded">▼</span>
+        </button>
+        <div class="excluded-list-container as-hidden" id="containerExcluded">
+          <ul class="excluded-list" id="listExcluded">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+      </div>
     </section>
+
 
 
     <!-- Scroll Mode Selection (Matching User Screenshot 1) -->

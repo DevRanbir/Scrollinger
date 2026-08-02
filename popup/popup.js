@@ -428,8 +428,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   setupCustomDropdown();
+  setupExcludedToggle();
   bindEvents();
 });
+
 
 let currentUrlKey = '';
 
@@ -511,8 +513,10 @@ function initUI(s) {
 
   setDirectionUI(s.direction || 'down');
   applyTranslations();
+  renderExcludedItems(s);
   updateActionButtons(s.isScrolling, s.direction || 'down');
 }
+
 
 function updateUIState(s) {
   if (s.language && s.language !== currentLanguage) {
@@ -576,13 +580,13 @@ function updateUIState(s) {
     if (numInt) numInt.value = s.scrollInterval;
   }
 
-  if (s.direction !== undefined) {
-    setDirectionUI(s.direction);
+  if (s.isScrolling !== undefined || s.direction !== undefined) {
+    chrome.storage.local.get(['isScrolling', 'direction'], (res) => {
+      updateActionButtons(res.isScrolling, res.direction || 'down');
+    });
   }
 
-  chrome.storage.local.get(['isScrolling', 'direction'], (res) => {
-    updateActionButtons(res.isScrolling, res.direction || 'down');
-  });
+  renderExcludedItems(s);
 }
 
 function setupCustomDropdown() {
@@ -957,5 +961,102 @@ function applyTranslations() {
     updateActionButtons(res.isScrolling, res.direction || 'down');
   });
 }
+
+function setupExcludedToggle() {
+  const btnToggle = document.getElementById('btnToggleExcluded');
+  const container = document.getElementById('containerExcluded');
+  if (!btnToggle || !container) return;
+
+  btnToggle.addEventListener('click', () => {
+    const isHidden = container.classList.contains('as-hidden');
+    if (isHidden) {
+      container.classList.remove('as-hidden');
+      btnToggle.classList.add('open');
+    } else {
+      container.classList.add('as-hidden');
+      btnToggle.classList.remove('open');
+    }
+  });
+}
+
+function renderExcludedItems(s) {
+  const list = document.getElementById('listExcluded');
+  const countEl = document.getElementById('cntExcluded');
+  if (!list || !countEl) return;
+
+  const enabledDomains = (s && s.enabledDomains) || {};
+  const pageEnabled = (s && s.pageEnabled) || (s && s.subFramePages) || {};
+
+  const excluded = [];
+
+  // 1. Excluded domains
+  Object.keys(enabledDomains).forEach(domain => {
+    if (enabledDomains[domain] === false) {
+      excluded.push({ type: 'domain', key: domain, label: domain });
+    }
+  });
+
+  // 2. Excluded pages
+  Object.keys(pageEnabled).forEach(pageKey => {
+    if (pageEnabled[pageKey] === false) {
+      excluded.push({ type: 'page', key: pageKey, label: pageKey });
+    }
+  });
+
+  countEl.textContent = excluded.length;
+  list.innerHTML = '';
+
+  if (excluded.length === 0) {
+    const emptyLi = document.createElement('li');
+    emptyLi.className = 'excluded-empty';
+    emptyLi.textContent = 'No excluded pages or domains';
+    list.appendChild(emptyLi);
+    return;
+  }
+
+  excluded.forEach(item => {
+    const li = document.createElement('li');
+    li.className = 'excluded-item';
+
+    const typeSpan = document.createElement('span');
+    typeSpan.className = 'excluded-type-badge';
+    typeSpan.textContent = item.type === 'domain' ? 'Domain' : 'Page';
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'excluded-name';
+    nameSpan.textContent = item.label;
+    nameSpan.title = item.label;
+
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'btn-enable-item';
+    removeBtn.textContent = 'Enable';
+    removeBtn.title = 'Re-enable auto-scrolling for this item';
+
+    removeBtn.addEventListener('click', () => {
+      if (item.type === 'domain') {
+        delete enabledDomains[item.key];
+        chrome.storage.local.set({ enabledDomains }, () => {
+          chrome.storage.local.get(null, (updated) => {
+            initUI(updated);
+          });
+        });
+      } else {
+        delete pageEnabled[item.key];
+        chrome.storage.local.set({ pageEnabled, subFramePages: pageEnabled }, () => {
+          chrome.storage.local.get(null, (updated) => {
+            initUI(updated);
+          });
+        });
+      }
+    });
+
+    li.appendChild(typeSpan);
+    li.appendChild(nameSpan);
+    li.appendChild(removeBtn);
+    list.appendChild(li);
+  });
+}
+
 
 

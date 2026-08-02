@@ -636,3 +636,123 @@ input[type="number"] {
   border-color: var(--primary);
 }
 
+/* Excluded Sites & Pages Dropdown */
+.excluded-section {
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.excluded-toggle-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--card-foreground);
+  padding: 6px 10px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.excluded-toggle-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.excluded-toggle-btn .chevron {
+  font-size: 9px;
+  transition: transform 0.2s ease;
+}
+
+.excluded-toggle-btn.open .chevron {
+  transform: rotate(180deg);
+}
+
+.excluded-list-container {
+  margin-top: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background-color: var(--muted);
+}
+
+.excluded-list-container.as-hidden {
+  display: none;
+}
+
+.excluded-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.excluded-empty {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  text-align: center;
+  padding: 8px 4px;
+  font-style: italic;
+}
+
+.excluded-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  background-color: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+.excluded-type-badge {
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  padding: 1px 4px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.excluded-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--card-foreground);
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.btn-enable-item {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: none;
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.btn-enable-item:hover {
+  background-color: var(--primary-hover);
+}
+
+
