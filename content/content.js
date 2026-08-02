@@ -356,32 +356,32 @@
   }
 
   function checkScopeEnabled() {
-    // 1. Domain Authorization Check:
-    // If enabledDomains[currentDomain] is explicitly set, it overrides the global setting.
-    // If not set for this domain, fall back to state.enabledGlobal.
-    let domainEnabled = false;
-    if (state.enabledDomains && state.enabledDomains[currentDomain] !== undefined) {
-      domainEnabled = !!state.enabledDomains[currentDomain];
-    } else {
-      domainEnabled = (state.enabledGlobal !== false);
-    }
-
-    if (!domainEnabled) {
-      return false;
-    }
-
-    // 2. Sub-Frame Check: If inside an iframe and sub-frames are excluded, do not run
     const subFrameDomains = state.subFrameDomains || {};
     const domainSubFrameAllowed = (currentDomain && subFrameDomains[currentDomain] !== undefined)
       ? subFrameDomains[currentDomain]
       : (state.includeSubFrames !== undefined ? state.includeSubFrames : true);
 
-    if (isSubFrame && !domainSubFrameAllowed) {
+    // Tier 1: Page/Sub-frame Level Checkbox (Most Specific Override)
+    // If "Include sub-frames" is explicitly CHECKED (true), show & run on current page
+    if (domainSubFrameAllowed === true) {
+      return true;
+    }
+
+    // If "Exclude sub-frames" is UNCHECKED (false), sub-frames/page excluded
+    if (domainSubFrameAllowed === false) {
       return false;
     }
 
-    return true;
+    // Tier 2: Domain Authorization Check
+    if (state.enabledDomains && state.enabledDomains[currentDomain] !== undefined) {
+      if (state.enabledDomains[currentDomain] === false) return false;
+      if (state.enabledDomains[currentDomain] === true) return true;
+    }
+
+    // Tier 3: Global Switch
+    return (state.enabledGlobal !== false);
   }
+
 
 
 
