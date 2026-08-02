@@ -1036,8 +1036,9 @@ function renderExcludedItems(s) {
 
     const domainHeader = document.createElement('div');
     domainHeader.className = 'tree-header';
-    domainHeader.textContent = `🌐 Excluded Domains (${excludedDomains.length})`;
+    domainHeader.textContent = `EXCLUDED DOMAINS (${excludedDomains.length})`;
     domainTreeSec.appendChild(domainHeader);
+
 
     const domainUl = document.createElement('ul');
     domainUl.className = 'tree-list';
@@ -1082,8 +1083,9 @@ function renderExcludedItems(s) {
 
     const pageHeader = document.createElement('div');
     pageHeader.className = 'tree-header';
-    pageHeader.textContent = `📄 Excluded Pages (${excludedPages.length})`;
+    pageHeader.textContent = `EXCLUDED PAGES (${excludedPages.length})`;
     pageTreeSec.appendChild(pageHeader);
+
 
     const pageUl = document.createElement('ul');
     pageUl.className = 'tree-list';

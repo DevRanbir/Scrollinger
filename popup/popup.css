@@ -691,20 +691,23 @@ input[type="number"] {
   display: flex;
   flex-direction: column;
   padding: 14px;
-  gap: 10px;
+  gap: 12px;
+  box-sizing: border-box;
 }
-
 
 .excluded-overlay.as-hidden {
   display: none;
 }
 
 .excluded-overlay-header {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .excluded-overlay-title {
@@ -712,7 +715,7 @@ input[type="number"] {
   font-weight: 800;
   color: var(--primary);
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
 }
 
 .btn-close-overlay {
@@ -728,6 +731,7 @@ input[type="number"] {
   justify-content: center;
   cursor: pointer;
   transition: all 0.15s ease;
+  flex-shrink: 0;
 }
 
 .btn-close-overlay svg {
@@ -741,69 +745,82 @@ input[type="number"] {
   background-color: var(--muted);
 }
 
-
 .excluded-trees-container {
+  width: 100%;
   flex: 1;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding-right: 2px;
+  gap: 14px;
+  box-sizing: border-box;
 }
 
 .tree-section {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  box-sizing: border-box;
 }
 
 .tree-header {
+  width: 100%;
+  text-align: left;
   font-size: 10px;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--muted-foreground);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding-bottom: 4px;
   border-bottom: 1px dashed var(--border);
+  box-sizing: border-box;
 }
 
 .tree-list {
+  width: 100%;
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
+  box-sizing: border-box;
 }
 
 .tree-item {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 10px;
   background-color: var(--muted);
   border: 1px solid var(--border);
   border-radius: 4px;
   padding: 6px 10px;
   font-size: 11px;
+  box-sizing: border-box;
 }
 
 .tree-item-name {
   flex: 1;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: var(--card-foreground);
   font-weight: 600;
   font-size: 11px;
+  text-align: left;
 }
 
 .excluded-empty {
+  width: 100%;
   font-size: 11px;
   color: var(--muted-foreground);
   text-align: center;
   padding: 24px 4px;
   font-style: italic;
+  box-sizing: border-box;
 }
 
 .btn-enable-item {
@@ -823,6 +840,7 @@ input[type="number"] {
 .btn-enable-item:hover {
   background-color: var(--primary-hover);
 }
+
 
 
 
